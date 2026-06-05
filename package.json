@@ -1,0 +1,15 @@
+{
+  "name": "ceylon-bar-restaurant",
+  "version": "1.0.0",
+  "description": "Ceylon Bar Restaurant Full Stack App",
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "seed": "cd server && npm run seed",
+    "install:all": "cd server && npm install && cd ../client && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
