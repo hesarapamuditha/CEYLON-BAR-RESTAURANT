@@ -7,6 +7,9 @@ export const authService = {
   updateProfile: (data) => api.put('/auth/me', data),
   changePassword: (data) => api.put('/auth/change-password', data),
   getAllUsers: (params) => api.get('/auth/users', { params }),
+  getAdmins: () => api.get('/auth/admins'),
+  createAdmin: (data) => api.post('/auth/admins', data),
+  deleteAdmin: (id) => api.delete(`/auth/admins/${id}`),
 };
 
 export const menuService = {

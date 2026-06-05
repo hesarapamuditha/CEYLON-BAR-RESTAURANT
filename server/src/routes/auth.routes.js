@@ -1,6 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { register, login, getMe, updateProfile, changePassword, getAllUsers } = require('../controllers/auth.controller');
+const { register, login, getMe, updateProfile, changePassword, getAllUsers, getAdmins, createAdmin, deleteAdmin } = require('../controllers/auth.controller');
 const { protect } = require('../middleware/auth.middleware');
 const { adminOnly } = require('../middleware/admin.middleware');
 
@@ -23,5 +23,8 @@ router.get('/me', protect, getMe);
 router.put('/me', protect, updateProfile);
 router.put('/change-password', protect, changePassword);
 router.get('/users', protect, adminOnly, getAllUsers);
+router.get('/admins', protect, adminOnly, getAdmins);
+router.post('/admins', protect, adminOnly, registerValidation, createAdmin);
+router.delete('/admins/:id', protect, adminOnly, deleteAdmin);
 
 module.exports = router;

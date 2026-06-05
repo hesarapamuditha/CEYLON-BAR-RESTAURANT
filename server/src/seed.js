@@ -78,7 +78,7 @@ const seed = async () => {
     // Seafood
     { name: 'Devilled Prawns', description: 'Jumbo prawns tossed in a spicy devilled sauce', price: 26.00, category: catMap['Seafood'], dietaryTags: ['spicy'], isFeatured: true },
     { name: 'Black Pepper Crab', description: 'Fresh crab cooked in a bold black pepper gravy', price: 32.00, category: catMap['Seafood'], dietaryTags: ['gluten-free'], isFeatured: true },
-    { name: 'Ambul Thiyal', description: 'Traditional sour fish curry made with goraka', price: 21.00, category: catMap['Seafood'], dietaryTags: ['gluten-free'], isFeatured: false },
+    { name: 'Ambul Thiyal', description: 'Traditional sour fish curry made with goraka', price: 21.00, category: catMap['Seafood'], dietaryTags: ['gluten-free'], isFeatured: false, hasSizes: true, sizes: { small: 15.00, regular: 21.00, large: 28.00 } },
 
     // Desserts
     { name: 'Wattalapam', description: 'Traditional jaggery coconut custard pudding', price: 7.00, category: catMap['Desserts'], dietaryTags: ['gluten-free'], isFeatured: true },

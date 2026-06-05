@@ -32,8 +32,8 @@ export default function LoginPage() {
       <div className="auth-card">
         <Link to="/" className="auth-back"><ArrowLeft size={16} /> Back to Home</Link>
         <div className="auth-logo">🍵</div>
-        <h1 className="auth-title">Welcome Back</h1>
-        <p className="auth-subtitle">Sign in to your Ceylon Bar account</p>
+        <h1 className="auth-title">Admin Access</h1>
+        <p className="auth-subtitle">Sign in to Ceylon Bar admin panel</p>
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
@@ -66,9 +66,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="auth-footer">
-          Don't have an account? <Link to="/register">Sign up</Link>
-        </p>
+
 
         <div className="auth-demo">
           <p><strong>Demo credentials:</strong></p>
