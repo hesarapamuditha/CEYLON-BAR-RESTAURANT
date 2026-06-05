@@ -8,7 +8,7 @@ Built using the **MERN Stack** (MongoDB, Express, React, Node.js) with a highly 
 <img width="1470" height="835" alt="Screenshot 2026-06-05 at 12 40 47" src="https://github.com/user-attachments/assets/e80e38e9-c0bb-48ab-a186-cabace265595" />
 <img width="1470" height="836" alt="Screenshot 2026-06-05 at 12 41 00" src="https://github.com/user-attachments/assets/35f534cd-5d23-4b8f-b32f-cc72fc1436df" />
 <img width="1470" height="834" alt="Screenshot 2026-06-05 at 12 41 13" src="https://github.com/user-attachments/assets/c4b01365-801a-4487-8aa2-5db537240cdf" />
-<img width="1470" height="766" alt="Screenshot 2026-06-05 at 12 41 32" src="https://github.com/user-attachments/assets/919fe300-ea9a-43df-b2d1-1fd5e89043cd" />
+<img width="1470" height="835" alt="Screenshot 2026-06-05 at 12 47 54" src="https://github.com/user-attachments/assets/8b43909e-96c2-4450-ab35-ff565acc2f7d" />
 <img width="1470" height="833" alt="Screenshot 2026-06-05 at 12 42 15" src="https://github.com/user-attachments/assets/96b46a4d-6b4a-4031-846d-5f2ce5a4e5e7" />
 <img width="1470" height="834" alt="Screenshot 2026-06-05 at 12 42 37" src="https://github.com/user-attachments/assets/907d211d-8b57-48cc-8cb8-6f49b20bcc5d" />
 
