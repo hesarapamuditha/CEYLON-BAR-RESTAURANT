@@ -26,6 +26,15 @@ const menuItemSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    hasSizes: {
+      type: Boolean,
+      default: false,
+    },
+    sizes: {
+      small: { type: Number, default: null },
+      regular: { type: Number, default: null },
+      large: { type: Number, default: null },
+    },
     dietaryTags: {
       type: [String],
       enum: ['vegan', 'vegetarian', 'gluten-free', 'spicy', 'halal', 'contains-nuts', 'dairy-free'],

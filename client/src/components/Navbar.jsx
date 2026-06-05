@@ -20,8 +20,8 @@ export default function Navbar() {
     { to: '/', label: 'Home' },
     { to: '/menu', label: 'Menu' },
     { to: '/reservations', label: 'Reservations' },
-    { to: '/contact', label: 'Contact' },
-  ];
+    !isAdmin && { to: '/contact', label: 'Contact' },
+  ].filter(Boolean);
 
   return (
     <nav className="navbar">
@@ -45,17 +45,12 @@ export default function Navbar() {
         </div>
 
         <div className="navbar-actions">
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <div className="user-menu">
               <span className="user-name"><User size={14} /> {user.name}</span>
               <button onClick={handleLogout} className="btn btn-ghost btn-sm">
                 <LogOut size={14} /> Logout
               </button>
-            </div>
-          ) : (
-            <div className="auth-buttons">
-              <Link to="/login" className="btn btn-ghost btn-sm">Login</Link>
-              <Link to="/register" className="btn btn-primary btn-sm">Sign Up</Link>
             </div>
           )}
           <button className="mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)}>

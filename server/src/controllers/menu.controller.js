@@ -1,5 +1,51 @@
+const fs = require('fs');
+const path = require('path');
 const MenuItem = require('../models/MenuItem');
 const Category = require('../models/Category');
+
+const processBase64Image = (imageString) => {
+  if (!imageString || !imageString.startsWith('data:image/')) {
+    return imageString;
+  }
+
+  try {
+    const matches = imageString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) {
+      return imageString;
+    }
+
+    const type = matches[1];
+    const extension = type.split('/')[1] || 'png';
+    const base64Data = matches[2];
+    const buffer = Buffer.from(base64Data, 'base64');
+
+    const uploadsDir = path.join(__dirname, '../../uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    const filename = `menu-${Date.now()}-${Math.round(Math.random() * 1e9)}.${extension}`;
+    const filepath = path.join(uploadsDir, filename);
+
+    fs.writeFileSync(filepath, buffer);
+
+    return `/uploads/${filename}`;
+  } catch (error) {
+    console.error('Failed to save base64 image:', error);
+    return imageString;
+  }
+};
+
+const formatItemImage = (item, req) => {
+  if (!item) return item;
+  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  const itemObj = item.toObject ? item.toObject() : item;
+
+  if (itemObj.image && itemObj.image.startsWith('/uploads')) {
+    itemObj.image = `${baseUrl}${itemObj.image}`;
+  }
+  return itemObj;
+};
 
 // ======================== MENU ITEMS ========================
 
@@ -36,7 +82,7 @@ const getAllMenuItems = async (req, res, next) => {
       total,
       page: parseInt(page),
       pages: Math.ceil(total / parseInt(limit)),
-      items,
+      items: items.map(item => formatItemImage(item, req)),
     });
   } catch (error) {
     next(error);
@@ -50,7 +96,7 @@ const getMenuItemById = async (req, res, next) => {
   try {
     const item = await MenuItem.findById(req.params.id).populate('category', 'name description');
     if (!item) return res.status(404).json({ success: false, message: 'Menu item not found' });
-    res.json({ success: true, item });
+    res.json({ success: true, item: formatItemImage(item, req) });
   } catch (error) {
     next(error);
   }
@@ -61,9 +107,10 @@ const getMenuItemById = async (req, res, next) => {
 // @access  Admin
 const createMenuItem = async (req, res, next) => {
   try {
-    const item = await MenuItem.create(req.body);
+    const processedImage = processBase64Image(req.body.image);
+    const item = await MenuItem.create({ ...req.body, image: processedImage });
     const populated = await item.populate('category', 'name');
-    res.status(201).json({ success: true, message: 'Menu item created', item: populated });
+    res.status(201).json({ success: true, message: 'Menu item created', item: formatItemImage(populated, req) });
   } catch (error) {
     next(error);
   }
@@ -74,12 +121,13 @@ const createMenuItem = async (req, res, next) => {
 // @access  Admin
 const updateMenuItem = async (req, res, next) => {
   try {
-    const item = await MenuItem.findByIdAndUpdate(req.params.id, req.body, {
+    const processedImage = processBase64Image(req.body.image);
+    const item = await MenuItem.findByIdAndUpdate(req.params.id, { ...req.body, image: processedImage }, {
       new: true,
       runValidators: true,
     }).populate('category', 'name');
     if (!item) return res.status(404).json({ success: false, message: 'Menu item not found' });
-    res.json({ success: true, message: 'Menu item updated', item });
+    res.json({ success: true, message: 'Menu item updated', item: formatItemImage(item, req) });
   } catch (error) {
     next(error);
   }

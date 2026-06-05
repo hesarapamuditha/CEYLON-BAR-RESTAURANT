@@ -160,4 +160,80 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getMe, updateProfile, changePassword, getAllUsers };
+// @desc    Get all admins (Admin)
+// @route   GET /api/auth/admins
+// @access  Admin
+const getAdmins = async (req, res, next) => {
+  try {
+    const admins = await User.find({ role: 'admin' }).sort({ createdAt: -1 });
+    res.json({ success: true, admins });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Create a new admin (Admin)
+// @route   POST /api/auth/admins
+// @access  Admin
+const createAdmin = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    const { name, email, password, phone } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ success: false, message: 'Email already registered' });
+    }
+
+    const admin = await User.create({
+      name,
+      email,
+      password,
+      phone,
+      role: 'admin',
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Admin account created successfully',
+      admin: {
+        _id: admin._id,
+        name: admin.name,
+        email: admin.email,
+        role: admin.role,
+        phone: admin.phone,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Delete an admin (Admin)
+// @route   DELETE /api/auth/admins/:id
+// @access  Admin
+const deleteAdmin = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    // Check if trying to delete oneself
+    if (req.user._id.toString() === id.toString()) {
+      return res.status(400).json({ success: false, message: 'You cannot delete your own admin account.' });
+    }
+
+    const admin = await User.findOneAndDelete({ _id: id, role: 'admin' });
+    if (!admin) {
+      return res.status(404).json({ success: false, message: 'Admin not found' });
+    }
+
+    res.json({ success: true, message: 'Admin account deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, getMe, updateProfile, changePassword, getAllUsers, getAdmins, createAdmin, deleteAdmin };

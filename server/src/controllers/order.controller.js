@@ -118,7 +118,12 @@ const updateOrderStatus = async (req, res, next) => {
   try {
     const { status, paymentStatus } = req.body;
     const update = {};
-    if (status) update.status = status;
+    if (status) {
+      update.status = status;
+      if (status === 'completed') {
+        update.paymentStatus = 'paid';
+      }
+    }
     if (paymentStatus) update.paymentStatus = paymentStatus;
 
     const order = await Order.findByIdAndUpdate(req.params.id, update, { new: true });
@@ -135,6 +140,12 @@ const updateOrderStatus = async (req, res, next) => {
 // @access  Admin
 const getOrderStats = async (req, res, next) => {
   try {
+    // Automatically update legacy completed orders to paid
+    await Order.updateMany(
+      { status: 'completed', paymentStatus: { $ne: 'paid' } },
+      { $set: { paymentStatus: 'paid' } }
+    );
+
     const stats = await Order.aggregate([
       {
         $group: {
